@@ -1,0 +1,26 @@
+{
+  "name": "vendor_name/algo",
+  "description": "description",
+  "minimum-stability": "stable",
+  "license": "proprietary",
+  "authors": [
+    {
+      "name": "Cindy Leschaud",
+      "email": "cindy.leschaud@gmail.com"
+    }
+  ],
+  "require": {
+
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^9"
+  },
+  "autoload": {
+    "psr-4": {
+      "src\\": "src/"
+    },
+    "classmap": [
+      "src/"
+    ]
+  }
+}
