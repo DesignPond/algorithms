@@ -631,15 +631,12 @@ class Math
 
         for ($i = 1; $i < $N; $i++) {
 
-
-            echo 'stack num '.$stack_num.'<br>';
-            echo 'stack before '.$stack[$stack_num - 1].'<br>';
-            echo '<pre>';
-            print_r($stack);
-            echo '</pre>';
-
-            if( $stack_num > 0 && $stack[$stack_num - 1] == $H[$i]){
+            while($stack_num > 0 && $stack[$stack_num - 1] > $H[$i]){
                 $stack_num -= 1;
+            }
+
+            if($stack_num > 0 && $stack[$stack_num - 1] == $H[$i]){
+               continue;
             }
             else{
                 $stones += 1;
