@@ -1,1 +1,0 @@
-C:37:"PHPUnit\Runner\DefaultTestResultCache":174:{a:2:{s:7:"defects";a:1:{s:20:"MathTest::testBinGap";i:4;}s:5:"times";a:2:{s:47:"MathTest::testCanBeCreatedFromValidEmailAddress";d:0.01;s:20:"MathTest::testBinGap";d:0.005;}}}
