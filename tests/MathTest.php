@@ -328,5 +328,132 @@ class MathTest extends TestCase
         $this->assertEquals($expected,$math->missingInteger($A));
     }
 
+    public function testPermCheck()
+    {
+        $math = new \src\Math();
+
+        $A = [4,1,3,2];
+
+        $this->assertEquals(1,$math->permCheck($A));
+
+        $A = [4,1,2];
+
+        $this->assertEquals(0,$math->permCheck($A));
+
+        $A = [0,0,0];
+
+        $this->assertEquals(0,$math->permCheck($A));
+
+        $A = [2,2];
+
+        /*   $this->assertEquals(0,$math->permCheck($A));
+   
+           $A = [2,3];
+   
+           $this->assertEquals(1,$math->permCheck($A));
+   
+           $A = [100000];
+   
+           $this->assertEquals(1,$math->permCheck($A));
+   
+           $A = range(100,100000);
+           $A[] = 1000001;
+           shuffle($A);*/
+
+        $this->assertEquals(0,$math->permCheck($A));
+    }
+
+    public function testCountDiv()
+    {
+        $math = new \src\Math();
+
+        $A = 1;
+        $B = 10;
+        $K = 2;
+
+        $results = $math->countDiv($A, $B, $K);
+
+        $this->assertEquals(5,$results);
+
+        $A = 6;
+        $B = 11;
+        $K = 2;
+
+        $results = $math->countDiv($A, $B, $K);
+
+        $this->assertEquals(3,$results);
+
+        $A = 0;
+        $B = 2000000000;
+        $K = 1;
+
+        $results = $math->countDiv($A, $B, $K);
+
+        $this->assertEquals(2000000001,$results);
+    }
+
+    public function testGenomicRangeQuery()
+    {
+        $math = new \src\Math();
+
+        $S = 'CAGCCTA';
+
+        $P = [2,5,0];
+        $Q = [4,5,6];
+
+        $this->assertEquals([2,4,1],$math->genomicRangeQuery($S, $P, $Q));
+
+        $S = 'CCCTA';
+
+        $P = [0,3,4];
+        $Q = [2,3,4];
+
+        $this->assertEquals([2,4,1],$math->genomicRangeQuery($S, $P, $Q));
+    }
+
+    public function testMinAvgTwoSlice()
+    {
+        $math = new \src\Math();
+
+        $A = [1,2,4];
+
+        $this->assertEquals(1,$math->minAvgTwoSlice($A));
+    }
+
+    public function testPassingCars()
+    {
+        $math = new \src\Math();
+
+        $A = [0,1,0,1,1];
+
+        $this->assertEquals(5,$math->passingCars($A));
+    }
+
+    public function testMaxProductOfThree()
+    {
+        $math = new \src\Math();
+
+        $A = [-3,1,2,-2,5,6];
+
+        $this->assertEquals(60,$math->maxProductOfThree($A));
+
+        $A = [1,2,2,3];
+
+        $this->assertEquals(12,$math->maxProductOfThree($A));
+    }
+
+    public function testNumberOfDiscIntersections()
+    {
+        $math = new \src\Math();
+
+        $x1 = -10;
+        $y1 = 8;
+        $x2 = 14;
+        $y2 = -24;
+        $r1 = 30;
+        $r2 = 10;
+
+        $this->assertEquals(1,$math->intersect($x1,$x2,$y1,$y2,$r1,$r2));
+    }
 
 }
