@@ -4,17 +4,10 @@ require __DIR__ . '/vendor/autoload.php';
 
 $math = new src\Math();
 
-$H[0] = 8;
-$H[1] = 8;
-$H[2] = 5;
-$H[3] = 7;
-$H[4] = 9;
-$H[5] = 8;
-$H[6] = 7;
-$H[7] = 4;
-$H[8] = 8;
+$H = [8, 8, 5, 7, 9, 8, 7, 4, 8];
+//$H = [4,2,4,2];
 
 echo '<pre>';
-print_r($math->wall($H));
+print_r($math->wall3($H));
 echo '</pre>';
 exit;

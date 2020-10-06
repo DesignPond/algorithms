@@ -621,30 +621,52 @@ class Math
         return 0;
     }
 
-    public function wall($H)
-    {
-        $N      = count($H); // 9
-        $stones = 0;
-        $stack  = array_fill(0, $N, 0);
+    public function wall($H){
 
-        $stack_num = 0;
+        //We need at least one block
+        $blocks = 1;
 
-        for ($i = 1; $i < $N; $i++) {
+        $stack = new \src\Stack();
+        $stack->push($H[0]);
 
-            while($stack_num > 0 && $stack[$stack_num - 1] > $H[$i]){
-                $stack_num -= 1;
+        for($i = 1; $i < count($H); $i++){
+
+            $blockFound = false;
+
+            //If the current height is higher than the previous, we need a new block + continue with the previous one
+            if($H[$i] > $H[$i-1]){
+                $blocks++;
+                $stack->push($H[$i]);
             }
+            else if($H[$i] < $H[$i-1]){
+                //If the current height is lower than the previous, one block ends, but we need a new block
+                //Take the last block of the stack
+                while(count($stack->stack) != 0 && $blockFound === false){
 
-            if($stack_num > 0 && $stack[$stack_num - 1] == $H[$i]){
-               continue;
-            }
-            else{
-                $stones += 1;
-                $stack[$stack_num] = $H[$i];
-                $stack_num += 1;
+                    // Same height as the last block in stack
+                    if($stack->head() === $H[$i]){
+                        // break the loop
+                        $blockFound = true;
+                    }
+                    else if($stack->head() < $H[$i]){
+                        // or the last block in stack is smaller than current
+                        // break the loop
+                        $blockFound = true;
+                        $stack->push($H[$i]);
+                        $blocks++;
+                    }
+                    else{
+                        // remove from stack
+                        $stack->pop();
+                    }
+                }
+
+                if(empty($stack->stack)){
+                    $blocks++;
+                    $stack->push($H[$i]);
+                }
             }
         }
-
-        return $stones;
+        return $blocks;
     }
 }

@@ -456,4 +456,16 @@ class MathTest extends TestCase
         $this->assertEquals(1,$math->intersect($x1,$x2,$y1,$y2,$r1,$r2));
     }
 
+    public function testStoneWall()
+    {
+        $math = new \src\Math();
+
+        $H = [8, 8, 5, 7, 9, 8, 7, 4, 8];
+
+        $this->assertEquals(7,$math->wall($H));
+
+        $H = [4,2,4,2];
+
+        $this->assertEquals(3,$math->wall($H));
+    }
 }
