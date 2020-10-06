@@ -633,6 +633,11 @@ class Math
 
             $blockFound = false;
 
+            echo '<pre>';
+            print_r($stack->stack);
+            print_r($blocks);
+            echo '</pre>';
+
             //If the current height is higher than the previous, we need a new block + continue with the previous one
             if($H[$i] > $H[$i-1]){
                 $blocks++;
@@ -667,6 +672,7 @@ class Math
                 }
             }
         }
+
         return $blocks;
     }
 }
