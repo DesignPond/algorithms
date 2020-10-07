@@ -5,23 +5,26 @@ require __DIR__ . '/vendor/autoload.php';
 $math = new src\Math();
 $cake = new src\Cake();
 
+$A[0] = 3;
+$A[1] = 4;
+$A[2] = 3;
+$A[3] = 2;
+$A[4] = 3;
+$A[5] = -1;
+$A[6] = 3;
+$A[7] = 3;
 
-new src\Meeting(2, 3);  // meeting from 10:00 – 10:30 am
-new src\Meeting(6, 9);  // meeting from 12:00 – 1:30 pm
-
-$H = [8, 8, 5, 7, 9, 8, 7, 4, 8];
-
-$prices = [10, 7, 5, 8, 11, 9];
-
-$meetings = [
-    new src\Meeting(0, 1),
-    new src\Meeting(3, 5),
-    new src\Meeting(4, 8),
-    new src\Meeting(10, 12),
-    new src\Meeting(9, 10)
-];
+/**/
+$A[0] = 1;
+$A[1] = 4;
+$A[2] = 4;
+$A[3] = 4;
+$A[4] = 4;
+$A[5] = 4;
+$A[6] = 4;
 
 echo '<pre>';
-print_r($cake->mergeRanges($meetings));
+print_r($math->dominator($A));
+print_r($math->dominator2($A));
 echo '</pre>';
-echo '<br>';
+exit;

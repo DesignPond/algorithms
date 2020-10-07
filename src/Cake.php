@@ -39,45 +39,71 @@ class Cake
 
     public function mergeRanges($meetings)
     {
-        $ranges = [];
-        $times = [];
-        $all = [];
+        $stack = new \src\Stack();
 
-        // 0 => 900
+        $ranges = [];
+        $times  = [];
 
         for($i = 0; $i < count($meetings) ;$i++) {
-            $ranges[] = $meetings[$i]->getStartTime();
-            $ranges[] = $meetings[$i]->getEndTime();
-            $times[$meetings[$i]->getEndTime().'-'.$meetings[$i]->getStartTime()] = ($meetings[$i]->getEndTime() * 30) - ($meetings[$i]->getStartTime() * 30) + 900;
+            $ranges[$meetings[$i]->getStartTime()] = range($meetings[$i]->getStartTime(),$meetings[$i]->getEndTime());
         }
 
-        sort($ranges);
-        $ranges = array_unique($ranges);
+        ksort($ranges);
+        $ranges = array_values($ranges);
 
-        foreach($ranges as $range) {
+        $news = [];
 
+        for($i = 0; $i < count($ranges) ;$i++) {
+            $unique = array_unique($ranges[$i]);
+            $first  = reset($unique);
+            $last   = end($unique);
+
+            $news[] = [$first,$last];
         }
 
-   /*     $newArray = [];
-        $i = 0;
+        $stack->push($news[0]);
 
-        foreach ($ranges as $index => $value) {
-            if ($index == 0) {
-                $newArray[$i][] = $value;
-                continue;
+        for($i = 1; $i < count($news) ;$i++) {
+
+            $top = $stack->head();
+            $end   = end($top);
+            // If the current interval does not overlap with the stacktop, push it.
+            if($end < $news[$i][0]){
+                $stack->push($news[$i]);
             }
-            if ($ranges[$index] == $ranges[$index-1]+1) { // consecutive
-                $newArray[$i][] = $value;
-
-            } else {
-                $newArray[++$i][] = $value;
+            elseif($end < $news[$i][1]){
+                // If the current interval overlaps with stack top and ending
+                // time of current interval is more than that of stack top,
+                // update stack top with the ending time of current interval.
+                $end = $news[$i][1];
+                $stack->pop();
+                $stack->push([$top[0],$end]);
             }
-        }*/
+        }
 
-        echo '<pre>';
-        print_r($ranges);
-        print_r($times);
-        echo '</pre>';
-        exit;
+       return $stack->stack;
+    }
+
+    public function reverse(&$S)
+    {
+        //return implode(array_reverse(str_split($S)));
+        //return strrev($S);
+        $leftIndex = 0;
+        $rightIndex = strlen($S) - 1;
+
+        while ($leftIndex < $rightIndex) {
+
+            // swap characters
+            $temp = $S[$leftIndex];
+
+            $S[$leftIndex]  = $S[$rightIndex];
+            $S[$rightIndex] = $temp;
+
+            // move towards middle
+            $leftIndex++;
+            $rightIndex--;
+        }
+
+        return $S;
     }
 }

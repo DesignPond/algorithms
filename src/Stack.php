@@ -28,4 +28,9 @@ class Stack
     {
         return $this->stack[$this->size - 1] ?? 0;
     }
+
+    public function setHead($x)
+    {
+        return $this->stack[$this->size - 1] = $x;
+    }
 }

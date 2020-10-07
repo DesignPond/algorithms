@@ -633,11 +633,6 @@ class Math
 
             $blockFound = false;
 
-            echo '<pre>';
-            print_r($stack->stack);
-            print_r($blocks);
-            echo '</pre>';
-
             //If the current height is higher than the previous, we need a new block + continue with the previous one
             if($H[$i] > $H[$i-1]){
                 $blocks++;
@@ -674,5 +669,71 @@ class Math
         }
 
         return $blocks;
+    }
+
+    public function dominator($A)
+    {
+        $N      = count($A);
+        $values = [];
+        $index  = null;
+        $max    = 0;
+
+        if($N === 1){
+            return 0;
+        }
+
+        for($i = 0; $i < count($A); $i++){
+            if(isset($values[$A[$i]])){
+                $values[$A[$i]] += 1;
+            }
+            else{
+                $values[$A[$i]] = 1;
+            }
+
+            if ($values[$A[$i]] > $max) {
+                $max   = $values[$A[$i]];
+                $index = $i;
+            }
+        }
+
+        if ( $index === null || ($max <= ($N / 2))) {
+            return -1;
+        }
+
+        return $index;
+    }
+
+    public function dominator2($A)
+    {
+        // Number of occurrences of each integer
+        $integerOccurrences = [];
+        // Maximum number of occurrences
+        $maxOccurrences = 0;
+        // Index of integer with maximum occurrences
+        $maxOccurrencesKey = null;
+
+        foreach ($A as $key => $value) {
+            if (empty($integerOccurrences[$value])) {
+                $integerOccurrences[$value] = 1;
+            } else {
+                $integerOccurrences[$value]++;
+            }
+
+            // Searching for integer with maxiumum occurences, and index of that integer
+            if ($integerOccurrences[$value] > $maxOccurrences) {
+                $maxOccurrences = $integerOccurrences[$value];
+                $maxOccurrencesKey = $key;
+            }
+        }
+
+        // Number of integers in array $A
+        $N = count($A);
+        // If index of integer with maxiumum occurences is not set,
+        // or integer with maxiumum occurences doesn't occur in more than half of the elements of $A
+        if ($maxOccurrencesKey === null || ($maxOccurrences <= $N / 2)) {
+            return -1;
+        }
+
+        return $maxOccurrencesKey;
     }
 }

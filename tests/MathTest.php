@@ -467,5 +467,36 @@ class MathTest extends TestCase
         $H = [4,2,4,2];
 
         $this->assertEquals(3,$math->wall($H));
+
+        $H = [3,2,2,4,2];
+
+        $this->assertEquals(3,$math->wall($H));
+    }
+
+    public function testDominator()
+    {
+        $math = new src\Math();
+
+        $A[0] = 3;
+        $A[1] = 4;
+        $A[2] = 3;
+        $A[3] = 2;
+        $A[4] = 3;
+        $A[5] = -1;
+        $A[6] = 3;
+        $A[7] = 3;
+
+        $this->assertEquals(7,$math->dominator($A));
+
+        $B[0] = 5;
+        $B[1] = 4;
+        $B[2] = 5;
+        $B[3] = 2;
+
+        $this->assertEquals(-1,$math->dominator($B));
+
+        $C[0] = 0;
+
+        $this->assertEquals(0,$math->dominator($C));
     }
 }
