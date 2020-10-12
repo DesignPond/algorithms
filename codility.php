@@ -12,6 +12,6 @@ $A[4] = 6;
 
 echo '<pre>';
 //print_r($codility->sieve(12));
-print_r($codility->countNonDivisible($A));
+print_r($codility->countNonDivisible1($A));
 echo '</pre>';
 exit;

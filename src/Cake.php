@@ -106,4 +106,28 @@ class Cake
 
         return $S;
     }
+
+    public function reverseLinkedList($node){
+        // initialize prev to null
+        $prev    = null;
+        // put passed node or head in current variable
+        $current = $node;
+
+        // While current is not null, we aren't at the end loop
+        while ($current !== null ) {
+            // put the next node in the next variable
+            $next = $current->getNext();
+            // set the next of the current to the previous node
+            $current->setNext($prev);
+            // swap prev for the current
+            $prev    = $current;
+            // set current to the next
+            $current = $next;
+        }
+
+        // Head becomes the last prev node
+        $node = $prev;
+
+        return $node;
+    }
 }

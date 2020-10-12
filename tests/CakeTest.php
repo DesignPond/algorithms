@@ -50,4 +50,46 @@ class CakeTest extends TestCase
 
         $this->assertEquals('ydnic',$reverse);
     }
+
+    public function testReverseLinkedList()
+    {
+        $a = new src\LinkedListNode(5);
+        $b = new src\LinkedListNode(1);
+        $c = new src\LinkedListNode(9);
+
+        $a->setNext($b);
+        $b->setNext($c);
+
+        $cake = new src\Cake();
+
+        $a = $cake->reverseLinkedList($a);
+        $b = $a->getNext();
+        $c = $b->getNext();
+
+        $this->assertEquals(9,$a->getvalue());
+        $this->assertEquals(1,$b->getvalue());
+        $this->assertEquals(5,$c->getvalue());
+    }
+
+    public function testReverseLinkedList2()
+    {
+        $a = new src\LinkedListNode(5);
+
+        $cake = new src\Cake();
+
+        $a = $cake->reverseLinkedList($a);
+
+        $this->assertEquals(5,$a->getvalue());
+    }
+
+    public function testReverseLinkedList3()
+    {
+        $a = new src\LinkedListNode(null);
+
+        $cake = new src\Cake();
+
+        $a = $cake->reverseLinkedList($a);
+
+        $this->assertEquals(null,$a->getvalue());
+    }
 }

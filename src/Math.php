@@ -118,19 +118,23 @@ class Math
 
     public function frogRiverOne($X, $A)
     {
-        $exist = [];
-        $need  = range(1,$X);
-
-        foreach ($A as $key => $value){
-            if(in_array($value,$need)){
-                $exist[] = $value;
-                $exist = array_unique($exist);
-            }
-
-            if(count($exist) == count($need)){
-                return $key;
-            }
+        $check_array = array();
+        for ($i=0; $i < count($A); $i++ ) {
+            $check_array[$i] = 0;
         }
+
+        for ($i=0; $i < count($A); $i++) {
+
+            if ($check_array[$A[$i]]==0) {
+                $check_array[$A[$i]]=1;
+                $X--;
+            }
+
+            if ($X==0) { return $i; }
+
+        }
+
+        return -1;
     }
     public function frogRiverOne2($X, $A)
     {
@@ -227,6 +231,7 @@ class Math
     {
         // Positive unique integers
         $uniques = [];
+        sort($A);
 
         foreach ($A as $integer) {
             // If integer is positive, and not already in array
@@ -678,62 +683,236 @@ class Math
         $index  = null;
         $max    = 0;
 
+        // the array is only one element it's the leader
         if($N === 1){
             return 0;
         }
 
+        // compute array count values
         for($i = 0; $i < count($A); $i++){
             if(isset($values[$A[$i]])){
+                // we have see the value already
                 $values[$A[$i]] += 1;
             }
             else{
+                // never seen value
                 $values[$A[$i]] = 1;
             }
 
+            // if the current value is bigger than the max
+            // update the values
             if ($values[$A[$i]] > $max) {
                 $max   = $values[$A[$i]];
                 $index = $i;
             }
         }
 
+        // if nothing found => null
+        // or the max value count found is bigger or same as half of the count of array
+        // return -1
         if ( $index === null || ($max <= ($N / 2))) {
             return -1;
         }
 
+        // return the index found of the last maximum
         return $index;
     }
 
-    public function dominator2($A)
+    public function equiLeader($A)
     {
-        // Number of occurrences of each integer
-        $integerOccurrences = [];
-        // Maximum number of occurrences
-        $maxOccurrences = 0;
-        // Index of integer with maximum occurrences
-        $maxOccurrencesKey = null;
+        $count     = count($A);
+        $candidate = -1;
+        $candidate_count = 0;
+        $candidate_index = -1;
 
-        foreach ($A as $key => $value) {
-            if (empty($integerOccurrences[$value])) {
-                $integerOccurrences[$value] = 1;
-            } else {
-                $integerOccurrences[$value]++;
-            }
-
-            // Searching for integer with maxiumum occurences, and index of that integer
-            if ($integerOccurrences[$value] > $maxOccurrences) {
-                $maxOccurrences = $integerOccurrences[$value];
-                $maxOccurrencesKey = $key;
+        # Find out a leader candidate
+        for($i = 0; $i < count($A); $i++){
+            if($candidate_count == 0){
+                $candidate = $A[$i];
+                $candidate_index = $i;
+                $candidate_count += 1;
+            } else{
+                if($A[$i] == $candidate) {
+                    $candidate_count += 1;
+                }
+                else {
+                    $candidate_count -= 1;
+                }
             }
         }
 
-        // Number of integers in array $A
+        $values = [];
+        $max = 0;
+        // compute array count values
+        for($i = 0; $i < count($A); $i++){
+            if(isset($values[$A[$i]])){
+                // we have see the value already
+                $values[$A[$i]] += 1;
+            }
+            else{
+                // never seen value
+                $values[$A[$i]] = 1;
+            }
+
+            // if the current value is bigger than the max
+            // update the values
+            if ($values[$A[$i]] > $max) {
+                $max   = $values[$A[$i]];
+                $index = $i;
+            }
+        }
+
+        # Make sure the candidate is the leader
+        if($max <= $count/2){
+            # The candidate is not the leader
+            return 0;
+        }
+        else{
+            $leader = $candidate;
+        }
+
+        $equi_leaders = 0;
+        $leader_count_so_far = 0;
+
+        for($i = 0; $i < count($A); $i++){
+            if($A[$i] == $leader){
+                $leader_count_so_far += 1;
+            }
+
+            if($leader_count_so_far > ($i+1)/2 && $leader_count - $leader_count_so_far > ($count - $i-1)/2){
+                # Both the head and tail have leaders of the same value
+                # as "leader"
+                $equi_leaders += 1;
+            }
+        }
+
+        # Both the head and tail have leaders of the same value
+        # as "leader"
+        return $equi_leaders;
+    }
+
+    public function maxProfit($A)
+    {
+        if (count($A) < 2) {
+            return 0;
+        }
+
+        // we'll greedily update minPrice and maxProfit, so we initialize
+        // them to the first price and the first possible profit
+        $minPrice  = $A[0];
+        $maxProfit = $A[1] - $A[0];
+
+        // start at the second (index 1) time
+        // we can't sell at the first time, since we must buy first,
+        // and we can't buy and sell at the same time!
+        // if we started at index 0, we'd try to buy *and* sell at time 0.
+        // this would give a profit of 0, which is a problem if our
+        // maxProfit is supposed to be *negative*--we'd return 0.
+        for ($i = 1; $i < count($A); $i++) {
+            $currentPrice = $A[$i];
+
+            // see what our profit would be if we bought at the
+            // min price and sold at the current price
+            $potentialProfit = $currentPrice - $minPrice;
+
+            // update maxProfit if we can do better
+            $maxProfit = max($maxProfit, $potentialProfit);
+
+            // update minPrice so it's always
+            // the lowest price we've seen so far
+            $minPrice = min($minPrice, $currentPrice);
+        }
+
+        return $maxProfit > 0 ? $maxProfit : 0;
+    }
+
+    public function countFactors($N)
+    {
+        $factors_array = [];
+
+        // racine carré du nombre ex: 25 => 5
+        // au plus près Valeur absolue.
+        for ($i = 1; $i <= sqrt(abs($N)); $i++) {
+            // 1,2,3,4,5
+            if(($N % $i ) == 0){
+                // 25 / 1 ok  => 25 & 1
+                // 25 / 2 => nope
+                // 25 / 3 => nope
+                // 25 / 4 => nope
+                // 25 / 5 ok  => 5 & 5
+                //
+                $x = $i;
+                $z = $N/$x;
+
+                // put $i, $z (divider) in array
+                array_push($factors_array, $x, $z);
+            }
+        }
+
+        return count(array_unique($factors_array));
+    }
+
+    public function peaks($A)
+    {
+        $N     = count($A);
+        $peaks = array_fill(0, count($A),0);
+
+        for ($i = 1; $i < count($A) - 1; $i++) {
+            //echo '<br>i:'.$A[$i].' <br>+'.$A[$i+1].' <br>-'.$A[$i-1];
+            if($A[$i] > max($A[$i - 1], $A[$i + 1]) ){
+                $peaks[$i] = 1;
+            }
+        }
+
+        return $peaks;
+    }
+
+    public function flags($A)
+    {
         $N = count($A);
-        // If index of integer with maxiumum occurences is not set,
-        // or integer with maxiumum occurences doesn't occur in more than half of the elements of $A
-        if ($maxOccurrencesKey === null || ($maxOccurrences <= $N / 2)) {
-            return -1;
+
+        if($N == 1){return 0;}
+
+        $next = $this->nextPeak($A);
+        $i = 1;
+        $result = 0;
+
+        while(($i - 1) * $i <= $N){
+            $pos = 0;
+            $num = 0;
+
+            while($pos < $N && $num < $i){
+                $pos = $next[$pos];
+
+                if($pos == -1){break;}
+
+                $num += 1;
+                $pos += $i;
+            }
+
+            $result = max($result, $num);
+            $i += 1;
         }
 
-        return $maxOccurrencesKey;
+        return $result;
+    }
+
+    public function nextPeak($A)
+    {
+        $N    = count($A);
+        $next = array_fill(0,$N,0);
+        $next[$N - 1] = -1;
+        $peaks = $this->peaks($A);
+
+        foreach(range($N - 2,0, -1) as $i){
+            if($peaks[$i]){
+                $next[$i] = $i;
+            }
+            else{
+                $next[$i] = $next[$i + 1];
+            }
+        }
+
+        return $next;
     }
 }

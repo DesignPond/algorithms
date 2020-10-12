@@ -263,9 +263,7 @@ class MathTest extends TestCase
         $A = [1,2,0,3,4,5,3,2,1,3,2,1,4,6,3,4,1,7,4,2,3]; // 18
         $X = 7;
 
-        $this->assertEquals(17,$math->frogRiverOne($X, $A));
-
-        $this->assertEquals(17,$math->frogRiverOne2($X, $A));
+        $this->assertEquals(13,$math->frogRiverOne($X, $A));
     }
 
     public function testMaxCounters()
@@ -293,6 +291,11 @@ class MathTest extends TestCase
     public function testMissingInteger()
     {
         $math = new \src\Math();
+
+        $A = [3,0,1];
+        $expected = 2;
+
+        $this->assertEquals($expected,$math->missingInteger($A));
 
         $A = [1, 3, 6, 4, 1, 2];
         $expected = 5;
@@ -326,6 +329,37 @@ class MathTest extends TestCase
         $expected = 766;
 
         $this->assertEquals($expected,$math->missingInteger($A));
+    }
+
+    public function testMissingIntSolution()
+    {
+        $solution = new \src\Solution();
+
+        $A = [3, 0, 1];
+        $expected = 2;
+
+        $this->assertEquals($expected, $solution->missingNumber($A));
+
+        $A = [1];
+        $expected = 0;
+
+        $this->assertEquals($expected, $solution->missingNumber($A));
+
+        $A =  [0,1];
+        $expected = 2;
+
+        $this->assertEquals($expected, $solution->missingNumber($A));
+
+        $A = [9,6,4,2,3,5,7,0,1];
+        $expected = 8;
+
+        $this->assertEquals($expected, $solution->missingNumber($A));
+
+        $A = [0];
+        $expected = 1;
+
+        $this->assertEquals($expected, $solution->missingNumber($A));
+
     }
 
     public function testPermCheck()
@@ -498,5 +532,46 @@ class MathTest extends TestCase
         $C[0] = 0;
 
         $this->assertEquals(0,$math->dominator($C));
+    }
+
+    public function testFlags()
+    {
+        $math = new src\Math();
+
+        $A[0] = 1;
+        $A[1] = 5;
+        $A[2] = 3;
+        $A[3] = 4;
+        $A[4] = 3;
+        $A[5] = 4;
+        $A[6] = 1;
+        $A[7] = 2;
+        $A[8] = 3;
+        $A[9] = 4;
+        $A[10] = 6;
+        $A[11] = 2;
+
+        $this->assertEquals(3,$math->flags($A));
+
+        $B[0] = 1;
+        $B[1] = 3;
+        $B[2] = 2;
+        $B[3] = 2;
+        $B[4] = 4;
+        $B[5] = 1;
+
+        $this->assertEquals(2,$math->flags($B));
+
+        $C = [7, 10, 4, 5, 7, 4, 6, 1, 4, 3, 3, 7];
+
+        $this->assertEquals(3,$math->flags($C));
+
+        $D = [1];
+
+        $this->assertEquals(0,$math->flags($D));
+
+        $D = [1,2];
+
+        $this->assertEquals(1,$math->flags($D));
     }
 }

@@ -33,4 +33,13 @@ class Stack
     {
         return $this->stack[$this->size - 1] = $x;
     }
+
+    public function size()
+    {
+        return count($this->stack);
+    }
+
+    public function reset(){
+        $this->stack = [];
+    }
 }
