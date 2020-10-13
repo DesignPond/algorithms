@@ -82,52 +82,41 @@ class Codility
         return $nonDivisibles;
     }
 
+    /**
+        We count how many time each number appearances in the list.
+        We can divide each number by the factors and count the appearance time in the list.
+        The number of no-dividers is the total number of the list minuses the count.
+     */
     public function countNonDivisible1($A)
     {
         $N = count($A);
+        $M = max($A);
 
-        $countValues = array_count_values($A);
-        $occurrences = array_fill(0, $N * 2 + 1, 0);
-
-        $answer = array_fill(0, $N * 2 + 1, 0);
-        $result = array_fill(0, $N, 0);
-
-        foreach ($countValues as $key => $value) {
-            $occurrences[$key] = $value;
-        }
-
-        echo '<pre>';
-        print_r($occurrences);
-        echo '</pre>';
-
-        $occurrence = array_fill(0, $M+1, 0);
+        $answer      = array_fill(0, $N, 0);
+        $result      = array_fill(0, $N, 0);
+        $occurrences = array_fill(0, $M+1, 0);
 
         // occurrence of num in array
         foreach ($A as $value) {
-            $occurrence[$value]++;
+            $occurrences[$value]++;
         }
 
-        echo '<pre>';
-        print_r($occurrence);
-        echo '</pre>';
-        exit;
-
-        for ($i = 1; $i <= $N * 2; $i++) {
-            // if we have an occurence
-            $num = $occurrences[$i];
-            if ($num == 0) {
-                continue;
-            }
-            // if we have an occurence
-            // put i in j and loop  remove number of occurence minuses
-            for ($j = $i; $j <= $N * 2; $j += $i) {
-                $answer[$j] -= $num;
+        for ($i = 0; $i < $N; $i++) {
+            // divide by until same number
+            // if 6: 1*1, 1*2, 1*3
+            for ($j = 1; $j * $j <= $A[$i]; $j++) {
+                if ($A[$i] % $j == 0) {
+                    $answer[$i] -= $occurrences[$j];
+                    if ($A[$i] / $j != $j) {
+                        $answer[$i] -= $occurrences[$A[$i] / $j];
+                    }
+                }
             }
         }
 
         // loop and retire from original count
         for ($i = 0; $i < $N; $i++) {
-            $result[$i] = $N + $answer[$A[$i]];
+            $result[$i] = $N + $answer[$i];
         }
 
         return $result;
