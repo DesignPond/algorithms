@@ -3,15 +3,15 @@
 require __DIR__ . '/vendor/autoload.php';
 
 $codility = new src\Codility();
+$coursera = new src\Coursera();
 
-$A[0] = 3;
-$A[1] = 1;
-$A[2] = 2;
-$A[3] = 3;
-$A[4] = 6;
+
+$A = [1,3,5,2,4,6];
+
 
 echo '<pre>';
-//print_r($codility->sieve(12));
-print_r($codility->countNonDivisible1($A));
+print_r($coursera->countInv($A, count($A)));
+//print_r($codility->checkSemiprime(4));
+
 echo '</pre>';
 exit;
