@@ -239,11 +239,54 @@ class Coursera
         return NULL;
     }
 
-    public function countInv($A, $N)
+    public function mergeAndCount($arr, $l, $m, $r)
     {
-        $temp = array_fill(0,$N,0);
+        // Left subarray
+        $left = array_slice($arr, $l, $m + 1);
 
-        return $this->_mergeSort($A, $temp, 0, $N-1);
+        // Right subarray
+        $right = array_slice($arr, $m + 1, $r + 1);
+
+        $i = 0;
+        $j = 0;
+        $k = $l;
+
+        $swaps = 0;
+
+        while ($i < count($left) && $j < count($right)) {
+            if ($left[$i] <= $right[$j])
+                $arr[$k++] = $left[$i++];
+            else {
+                $arr[$k++] = $right[$j++];
+
+                $swaps += ($m + 1) - ($l + $i);
+            }
+        }
+
+        return $swaps;
+    }
+
+    public function mergeSortAndCount($arr, $l, $r)
+    {
+        // Keeps track of the inversion count at a
+        // particular node of the recursion tree
+        $count = 0;
+
+        if ($l < $r) {
+            $m = ($l + $r) / 2;
+
+            // Total inversion count = left subarray count  + right subarray count + merge count
+            // Left subarray count
+            $count += $this->mergeSortAndCount($arr, $l, $m);
+
+            // Right subarray count
+            $count += $this->mergeSortAndCount($arr,$m + 1, $r);
+
+            // Merge count
+            $count += $this->mergeAndCount($arr, $l, $m, $r);
+        }
+
+        return $count;
     }
 
     public function _mergeSort($A, $temp, $left, $right)
